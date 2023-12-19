@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+  <changeSet id="1" author="brandonm">
+    <createTable tableName="order">
+      <column name="id" type="int" autoIncrement="true">
+        <constraints primaryKey="true" primaryKeyName="pk_order"/>
+      </column>
+      <column name="customerName" type="varchar(255)"/>
+      <column name="orderDate" type="datetime"/>
+      <!-- Additional columns as needed -->
+    </createTable>
+  </changeSet>
+
+  <changeSet id="2" author="brandonm">
+    <insert tableName="order">
+      <column name="customerName" value="Alice Johnson"/>
+      <column name="orderDate" value="2023-01-15 10:00:00"/>
+    </insert>
+    <insert tableName="order">
+      <column name="customerName" value="Bob Smith"/>
+      <column name="orderDate" value="2023-01-16 15:30:00"/>
+    </insert>
+  </changeSet>
+
+</databaseChangeLog>

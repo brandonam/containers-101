@@ -1,9 +1,9 @@
 # compiled output
-/dist
-/node_modules
-/.pnp
-.pnp.js
-.yarn/install-state.gz
+**/dist
+**/node_modules
+**/.pnp
+*.pnp.js
+*.yarn/install-state.gz
 
 # Logs
 logs
@@ -38,14 +38,14 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # testing
-/coverage
+**/coverage
 
 # next.js
-/.next/
-/out/
+**/.next/
+**/out/
 
 # production
-/build
+**/build
 
 # misc
 .DS_Store

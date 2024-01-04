@@ -1,42 +1,53 @@
-version: '3.8'
+version: '3.8' # Specifies the version of Docker Compose file format.
+
 services:
+  # Defines the services (containers) that make up your application.
+
   mysql:
-    container_name: mysql
-    image: mysql:8.2
+    # Service name, here it's a MySQL database.
+    container_name: mysql # Name of the container.
+    image: mysql:8.2 # The Docker image to use for the container, here MySQL version 8.2.
     environment:
-      MYSQL_DATABASE: online_purchase_system
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: rootpassword
+      # Environment variables for the MySQL container.
+      MYSQL_DATABASE: online_purchase_system # Name of the database to be created.
+      MYSQL_USER: user # MySQL non-root user.
+      MYSQL_PASSWORD: password # Password for the MySQL non-root user.
+      MYSQL_ROOT_PASSWORD: rootpassword # Password for the MySQL root user.
     ports:
-      - "3306:3306"
+      - "3306:3306" # Port mapping from host to container. MySQL's default port 3306 is exposed.
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql # Mounts a volume for MySQL data persistence.
 
   api:
-    container_name: nestjs
-    build: ./api
+    # Service for the API.
+    container_name: nestjs # Name of the container.
+    build: ./api # Path to the directory containing the Dockerfile for building the image.
     ports:
-      - "3000:3000"
+      - "3000:3000" # Port mapping, making the API accessible on port 3000.
     depends_on:
-      - mysql
+      - mysql # Specifies that this service depends on the mysql service.
 
   ui:
-    container_name: nextjs
-    build: ./ui
+    # Service for the UI.
+    container_name: nextjs # Name of the container.
+    build: ./ui # Path to the directory containing the Dockerfile for building the UI image.
     ports:
-      - "3001:3000"
+      - "3001:3000" # Port mapping, making the UI accessible on port 3001.
 
   liquibase:
-    image: liquibase/liquibase
+    # Service for database migration using Liquibase.
+    image: liquibase/liquibase # The Docker image for Liquibase.
     depends_on:
-      - mysql
+      - mysql # This service depends on the mysql service.
     environment:
+      # Environment variables for Liquibase.
+      # Configuration for connecting to the MySQL database.
       LIQUIBASE_URL: jdbc:mysql://mysql:3306/online_purchase_system?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       LIQUIBASE_USERNAME: user
       LIQUIBASE_PASSWORD: password
       LIQUIBASE_DRIVER: com.mysql.cj.jdbc.Driver
     command:
+      # Liquibase command to update the database schema.
       [
         "--url=jdbc:mysql://mysql:3306/online_purchase_system?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true",
         "--driver=com.mysql.cj.jdbc.Driver",
@@ -46,7 +57,7 @@ services:
         "update"
       ]
     volumes:
-      - ./db/changelog:/liquibase/changelog
+      - ./db/changelog:/liquibase/changelog # Mounts the changelog directory into the container.
 
 volumes:
-  mysql-data:
+  mysql-data: # Defines a named volume for the MySQL data.
